@@ -32,6 +32,8 @@ const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 const nextCanvas = document.getElementById('next-canvas');
 const nextCtx = nextCanvas.getContext('2d');
+const holdCanvas = document.getElementById('hold-canvas');
+const holdCtx = holdCanvas.getContext('2d');
 const scoreEl = document.getElementById('score');
 const linesEl = document.getElementById('lines');
 const levelEl = document.getElementById('level');
@@ -51,7 +53,7 @@ function readThemeColors() {
   };
 }
 
-let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId;
+let board, current, next, held, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId;
 
 function createBoard() {
   return Array.from({ length: ROWS }, () => new Array(COLS).fill(0));
@@ -218,15 +220,46 @@ function draw() {
       drawBlock(ctx, current.x + c, current.y + r, current.shape[r][c], BLOCK);
 }
 
-function drawNext() {
+function drawPreview(context, cvs, piece) {
   const NB = 30;
-  nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
-  const shape = next.shape;
+  context.clearRect(0, 0, cvs.width, cvs.height);
+  if (!piece) return;
+  const shape = piece.shape;
   const offX = Math.floor((4 - shape[0].length) / 2);
   const offY = Math.floor((4 - shape.length) / 2);
   for (let r = 0; r < shape.length; r++)
     for (let c = 0; c < shape[r].length; c++)
-      drawBlock(nextCtx, offX + c, offY + r, shape[r][c], NB);
+      drawBlock(context, offX + c, offY + r, shape[r][c], NB);
+}
+
+function drawNext() {
+  drawPreview(nextCtx, nextCanvas, next);
+}
+
+function drawHold() {
+  drawPreview(holdCtx, holdCanvas, held);
+  holdCanvas.style.setProperty('--c', held ? COLORS[held.type] : '');
+  holdCanvas.classList.toggle('has-piece', !!held);
+}
+
+// H: guarda la pieza actual (solo si el hueco está libre) y pasa a la siguiente.
+function holdPiece() {
+  if (held) return;
+  held = { type: current.type, shape: PIECES[current.type].map(row => [...row]) };
+  drawHold();
+  dropAccum = 0;
+  spawn();
+}
+
+// J: suelta la pieza guardada y la pone en juego, liberando el hueco.
+function releasePiece() {
+  if (!held) return;
+  const shape = held.shape;
+  current = { type: held.type, shape, x: Math.floor(COLS / 2) - Math.floor(shape[0].length / 2), y: 0 };
+  held = null;
+  drawHold();
+  dropAccum = 0;
+  if (collide(current.shape, current.x, current.y)) endGame();
 }
 
 function endGame() {
@@ -278,6 +311,8 @@ function init() {
   dropAccum = 0;
   lastTime = performance.now();
   next = randomPiece();
+  held = null;
+  drawHold();
   spawn();
   updateHUD();
   overlay.classList.add('hidden');
@@ -306,6 +341,12 @@ document.addEventListener('keydown', e => {
       e.preventDefault();
       hardDrop();
       break;
+    case 'KeyH':
+      holdPiece();
+      break;
+    case 'KeyJ':
+      releasePiece();
+      break;
   }
   updateHUD();
 });
@@ -323,6 +364,7 @@ themeBtn.addEventListener('click', () => {
   readThemeColors();
   draw();
   drawNext();
+  drawHold();
 });
 
 themeBtn.setAttribute('aria-checked', document.documentElement.dataset.theme === 'light');

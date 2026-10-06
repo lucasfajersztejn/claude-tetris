@@ -39,6 +39,7 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Soft drop** (bajada acelerada) y **hard drop** (caída instantánea).
 - **Pieza fantasma** (_ghost piece_): muestra dónde aterrizará la pieza actual.
 - **Vista previa** de la siguiente pieza.
+- **Hold (guardar pieza)**: `H` guarda la pieza en caída en el recuadro `HOLD` (a la izquierda del tablero) y pasa a la siguiente; `J` suelta la pieza guardada, que pasa a ser la pieza activa (sustituye a la que estaba cayendo) y deja el hueco libre. Mientras haya una pieza guardada, `H` no hace nada. El título `HOLD` usa letras de colores como el título del juego y el borde del recuadro brilla con el color de la pieza guardada.
 - **Sistema de puntuación** clásico de Tetris (100 / 300 / 500 / 800 multiplicado por nivel).
 - **Niveles** que aumentan cada 10 líneas y aceleran la caída.
 - **Pausa** y **Game Over** con opción de reinicio.
@@ -98,7 +99,7 @@ El juego se compone de tres archivos que cooperan:
 Define la estructura visual:
 
 - Un `<canvas id="board">` de **300 × 600** píxeles donde se renderiza el tablero.
-- Un panel lateral con `SCORE`, `LINES`, `LEVEL`, el interruptor de tema, vista de la siguiente pieza y la lista de controles.
+- Un recuadro `HOLD` (`<canvas id="hold-canvas">`) a la izquierda del tablero y un panel lateral con `SCORE`, `LINES`, `LEVEL`, el interruptor de tema, vista de la siguiente pieza y la lista de controles.
 - Un overlay para los estados **PAUSA** y **GAME OVER**.
 
 ### 2. `style.css`
