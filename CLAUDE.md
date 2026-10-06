@@ -32,3 +32,7 @@ Colors live in CSS variables: dark in `:root`, light in `html[data-theme="light"
 - The next-piece preview uses a hardcoded 4x4 grid with `NB = 30` in `drawNext()`.
 - Rotation is plain CW matrix rotation with horizontal kicks `[0,-1,1,-2,2]` only (no SRS tables, no floor kicks). Piece selection is uniform random (no 7-bag).
 - `README.md` is a detailed Spanish description; keep it in sync if behavior changes.
+
+## Menú de pausa
+
+`P`/`Escape` -> `togglePause()` muestra `#overlay` con `#pause-menu` (Reanudar `#resume-btn`, Reiniciar `#pause-restart-btn` -> `init()`, Ver controles `#controls-btn` / `#pause-controls` / `#controls-back-btn`, selector `#start-level` 1-15). `#restart-btn` solo se ve en Game Over (`endGame()` oculta el menú; `togglePause()` oculta el botón). `startLevel` (+ `localStorage.startLevel`) lo captura `init()` en `gameStartLevel`; `clearLines()` usa `level = gameStartLevel + floor(lines/10)`. Con `paused` el handler de teclado ignora las teclas de juego (solo ↑/↓ navegan el menú); al reanudar, `inputGuardUntil` (150 ms) y `blockRepeat` (hasta el siguiente keyup/keydown nuevo) descartan teclas mantenidas, y `dropAccum = 0`. Los botones del menú se `blur()`ean al reanudar para que Space no los active.
