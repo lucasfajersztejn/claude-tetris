@@ -22,7 +22,7 @@ Three files, all logic in `game.js` (single script, no modules, global state via
 
 ## Theming
 
-Colors live in CSS variables: dark in `:root`, light in `html[data-theme="light"]` (dark is the default, no attribute). The `#theme-toggle` button (a T piece in the panel) flips the attribute and rotates 90° per click. Canvas colors that depend on the theme (`--grid`, `--highlight`) are read in `readThemeColors()` into `themeColors`; call it after any theme change, then redraw. Add new themed colors as variables in both blocks.
+Colors live in CSS variables: dark in `:root`, light in `html[data-theme="light"]` (dark is the default, no attribute). The `#theme-toggle` button (`role="switch"` in the panel between LEVEL and NEXT; colorful DARK/LIGHT letters + sliding block, driven by `aria-checked`) flips the attribute and saves `localStorage.theme`; an inline script in `<head>` applies the saved or system theme before first paint. Canvas colors that depend on the theme (`--grid`, `--highlight`) are read in `readThemeColors()` into `themeColors`; call it after any theme change, then redraw. Add new themed colors as variables in both blocks.
 
 ## Gotchas
 

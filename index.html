@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tetris</title>
+  <script>
+    try {
+      const t = localStorage.getItem('theme');
+      if (t === 'light' || (!t && matchMedia('(prefers-color-scheme: light)').matches)) document.documentElement.dataset.theme = 'light';
+    } catch (e) {}
+  </script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -17,17 +23,6 @@
 
       <aside class="panel">
         <div class="panel-section">
-          <span class="label">TEMA</span>
-          <button id="theme-toggle" type="button" aria-label="Cambiar tema claro/oscuro" aria-pressed="false" title="Cambiar tema">
-            <span class="theme-piece" aria-hidden="true">
-              <span style="--c: #ba68c8; grid-area: 1 / 2"></span>
-              <span style="--c: #ba68c8; grid-area: 2 / 1"></span>
-              <span style="--c: #ba68c8; grid-area: 2 / 2"></span>
-              <span style="--c: #ba68c8; grid-area: 2 / 3"></span>
-            </span>
-          </button>
-        </div>
-        <div class="panel-section">
           <span class="label">SCORE</span>
           <span class="value" id="score">0</span>
         </div>
@@ -38,6 +33,14 @@
         <div class="panel-section">
           <span class="label">LEVEL</span>
           <span class="value" id="level">1</span>
+        </div>
+        <div class="panel-section">
+          <span class="label">TEMA</span>
+          <button id="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Tema claro" title="Cambiar tema">
+            <span class="theme-word theme-dark" aria-hidden="true"><span style="--c: #ba68c8">D</span><span style="--c: #4dd0e1">A</span><span style="--c: #e57373">R</span><span style="--c: #ffd54f">K</span></span>
+            <span class="theme-track" aria-hidden="true"><span class="theme-knob"></span></span>
+            <span class="theme-word theme-light" aria-hidden="true"><span style="--c: #ffb74d">L</span><span style="--c: #ffd54f">I</span><span style="--c: #81c784">G</span><span style="--c: #4dd0e1">H</span><span style="--c: #e57373">T</span></span>
+          </button>
         </div>
 
         <div class="panel-section">

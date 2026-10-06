@@ -130,32 +130,70 @@ body {
   border-radius: 4px;
 }
 
-/* ---- Toggle de tema (pieza T) ---- */
+/* ---- Toggle de tema ---- */
 #theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   align-self: flex-start;
   background: none;
   border: none;
-  padding: 4px;
+  padding: 4px 0;
   cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1px;
 }
 
-.theme-piece {
-  display: grid;
-  grid-template: repeat(3, 20px) / repeat(3, 20px);
-  gap: 2px;
-  transform: rotate(var(--rot, 0deg));
-  transition: transform 0.35s cubic-bezier(0.3, 1.4, 0.5, 1);
+.theme-word span {
+  color: var(--c);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--c) 55%, transparent),
+               0 2px 0 color-mix(in srgb, var(--c) 45%, var(--title-shade));
+  transition: opacity 0.2s;
 }
 
-.theme-piece span {
-  background: var(--c);
+.theme-word {
+  opacity: 0.3;
+  transition: opacity 0.2s;
+}
+
+#theme-toggle[aria-checked="false"] .theme-dark,
+#theme-toggle[aria-checked="true"] .theme-light {
+  opacity: 1;
+}
+
+.theme-track {
+  position: relative;
+  width: 44px;
+  height: 22px;
+  flex: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--board-bg);
+}
+
+.theme-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
   border-radius: 3px;
-  box-shadow: 0 0 12px color-mix(in srgb, var(--c) 55%, transparent),
-              0 3px 0 color-mix(in srgb, var(--c) 45%, var(--title-shade));
+  background: #ba68c8;
+  box-shadow: 0 0 10px color-mix(in srgb, #ba68c8 55%, transparent),
+              0 2px 0 color-mix(in srgb, #ba68c8 45%, var(--title-shade));
+  transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1), background 0.25s;
 }
 
-#theme-toggle:hover .theme-piece {
-  filter: brightness(1.15);
+#theme-toggle[aria-checked="true"] .theme-knob {
+  transform: translateX(22px);
+  background: #ffd54f;
+  box-shadow: 0 0 10px color-mix(in srgb, #ffd54f 55%, transparent),
+              0 2px 0 color-mix(in srgb, #ffd54f 45%, var(--title-shade));
+}
+
+#theme-toggle:hover .theme-track {
+  border-color: var(--accent);
 }
 
 #theme-toggle:focus-visible {

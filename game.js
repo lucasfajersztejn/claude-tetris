@@ -41,7 +41,7 @@ const overlayScore = document.getElementById('overlay-score');
 const restartBtn = document.getElementById('restart-btn');
 const themeBtn = document.getElementById('theme-toggle');
 
-let themeColors, themeRotation = 0;
+let themeColors;
 
 function readThemeColors() {
   const s = getComputedStyle(document.documentElement);
@@ -317,14 +317,15 @@ themeBtn.addEventListener('click', () => {
   const light = root.dataset.theme !== 'light';
   if (light) root.dataset.theme = 'light';
   else delete root.dataset.theme;
-  themeBtn.setAttribute('aria-pressed', light);
-  themeRotation += 90;
-  themeBtn.firstElementChild.style.setProperty('--rot', themeRotation + 'deg');
+  themeBtn.setAttribute('aria-checked', light);
+  try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (e) {}
   themeBtn.blur(); // evita que Space active el botón durante la partida
   readThemeColors();
   draw();
   drawNext();
 });
+
+themeBtn.setAttribute('aria-checked', document.documentElement.dataset.theme === 'light');
 
 readThemeColors();
 init();
