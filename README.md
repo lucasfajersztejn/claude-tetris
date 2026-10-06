@@ -43,6 +43,7 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Sistema de puntuación** clásico de Tetris (100 / 300 / 500 / 800 multiplicado por nivel).
 - **Niveles** que aumentan cada 10 líneas y aceleran la caída.
 - **Pausa** y **Game Over** con opción de reinicio.
+- **Pantalla de inicio y records**: al cargar se muestra un overlay con el título, la tabla de los **5 mejores** y el botón **Jugar** (la partida no arranca hasta pulsarlo). Al terminar la partida, si la puntuación entra en el top 5 aparece un campo de nombre (máx. 12 caracteres; `Enter` o **Guardar**) y la fila nueva se resalta. La tabla se guarda en `localStorage.highscores` (`[{name, score, lines, combo, date}]`). También se muestran el **mejor combo** (piezas seguidas que limpian líneas) y las **líneas máximas** (`localStorage.bests`). El botón **Borrar records** (con confirmación) lo reinicia todo.
 - **Tema oscuro / claro**: interruptor en el panel lateral, entre `LEVEL` y `NEXT` (`<button id="theme-toggle">`), con las palabras `DARK` / `LIGHT` en letras de colores como el título y un bloque que se desliza. En el primer arranque usa el tema del sistema (`prefers-color-scheme`); después se guarda la elección en `localStorage`.
 
 ---
@@ -100,7 +101,7 @@ Define la estructura visual:
 
 - Un `<canvas id="board">` de **300 × 600** píxeles donde se renderiza el tablero.
 - Un recuadro `HOLD` (`<canvas id="hold-canvas">`) a la izquierda del tablero y un panel lateral con `SCORE`, `LINES`, `LEVEL`, el interruptor de tema, vista de la siguiente pieza y la lista de controles.
-- Un overlay para los estados **PAUSA** y **GAME OVER**.
+- Un overlay para los estados **INICIO**, **PAUSA** y **GAME OVER** (con formulario de nombre y tabla de records).
 
 ### 2. `style.css`
 

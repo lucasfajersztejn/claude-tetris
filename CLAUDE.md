@@ -22,6 +22,8 @@ Three files, all logic in `game.js` (single script, no modules, global state via
 
 - Hold: `H` -> `holdPiece()` stores `current` in `held` and calls `spawn()` (ignored if `held` set); `J` -> `releasePiece()` replaces `current` with the held piece at spawn position and clears `held`.
 
+- High scores: the overlay doubles as start screen (`showStart()`; `started=false` until `Jugar`, i.e. `#restart-btn`, calls `init()`), pause and game over. `endGame()` updates `localStorage.bests` `{combo, lines}` and, if the score ranks in the top 5 of `localStorage.highscores` (`[{name, score, lines, combo, date}]`), sets `pendingRecord` and shows `#name-form`; `commitRecord()` saves it (also on restart). `combo`/`maxCombo` are tracked in `clearLines()` (reset by a lock with no clear). The keydown handler ignores events from `#name-input` and while `!started`. Records DOM ids: `records`, `records-list`, `records-bests`, `reset-records`, `name-form`, `name-input`, `save-btn`. Highlight colors: `--record-hl`, `--record-hl-text`.
+
 ## Theming
 
 Colors live in CSS variables: dark in `:root`, light in `html[data-theme="light"]` (dark is the default, no attribute). The `#theme-toggle` button (`role="switch"` in the panel between LEVEL and NEXT; colorful DARK/LIGHT letters + sliding block, driven by `aria-checked`) flips the attribute and saves `localStorage.theme`; an inline script in `<head>` applies the saved or system theme before first paint. Canvas colors that depend on the theme (`--grid`, `--highlight`) are read in `readThemeColors()` into `themeColors`; call it after any theme change, then redraw. Add new themed colors as variables in both blocks.
