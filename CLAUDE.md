@@ -26,6 +26,10 @@ Three files, all logic in `game.js` (single script, no modules, global state via
 
 Colors live in CSS variables: dark in `:root`, light in `html[data-theme="light"]` (dark is the default, no attribute). The `#theme-toggle` button (`role="switch"` in the panel between LEVEL and NEXT; colorful DARK/LIGHT letters + sliding block, driven by `aria-checked`) flips the attribute and saves `localStorage.theme`; an inline script in `<head>` applies the saved or system theme before first paint. Canvas colors that depend on the theme (`--grid`, `--highlight`) are read in `readThemeColors()` into `themeColors`; call it after any theme change, then redraw. Add new themed colors as variables in both blocks.
 
+## Skins
+
+`SKINS = { retro, neon, pastel, pixel }` in `game.js`, each `{ colors, drawBlock(context, px, py, size, color) }`. `drawBlock(context,x,y,colorIndex,size,alpha)` wraps the active skin's draw in `save()/restore()` (so Neon's `shadowBlur` never leaks). `COLORS` is a `let` reassigned by `setSkin(name)`, which also sets `html[data-skin]` (CSS forces black canvas backgrounds for neon). `#skin-select` in the panel persists to `localStorage.skin`, redraws board/next/hold and blurs itself. Retro must stay the original look.
+
 ## Gotchas
 
 - Changing `COLS`, `ROWS` or `BLOCK` requires updating the `width`/`height` attributes of `<canvas id="board">` in `index.html` by hand.

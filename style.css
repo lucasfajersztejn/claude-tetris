@@ -169,6 +169,24 @@ body {
   box-shadow: 0 0 14px color-mix(in srgb, var(--c) 55%, transparent);
 }
 
+/* ---- Skins ---- */
+html[data-skin="neon"] #board,
+html[data-skin="neon"] #next-canvas,
+html[data-skin="neon"] #hold-canvas {
+  background: #000;
+}
+
+#skin-select {
+  background: var(--board-bg);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 6px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
 /* ---- Toggle de tema ---- */
 #theme-toggle {
   display: flex;

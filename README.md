@@ -43,6 +43,7 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Sistema de puntuación** clásico de Tetris (100 / 300 / 500 / 800 multiplicado por nivel).
 - **Niveles** que aumentan cada 10 líneas y aceleran la caída.
 - **Pausa** y **Game Over** con opción de reinicio.
+- **Skins**: selector `SKIN` en el panel lateral (`<select id="skin-select">`) con `Retro` (bloques planos, aspecto original), `Neon` (fondo negro y brillo con `shadowBlur`), `Pastel` (colores suaves y bloques redondeados) y `Pixel` (textura de píxeles sobre cada bloque). Cambia sin recargar, también en las vistas `NEXT`/`HOLD`, y se guarda en `localStorage.skin`. Convive con el tema oscuro / claro.
 - **Tema oscuro / claro**: interruptor en el panel lateral, entre `LEVEL` y `NEXT` (`<button id="theme-toggle">`), con las palabras `DARK` / `LIGHT` en letras de colores como el título y un bloque que se desliza. En el primer arranque usa el tema del sistema (`prefers-color-scheme`); después se guarda la elección en `localStorage`.
 
 ---
@@ -99,7 +100,7 @@ El juego se compone de tres archivos que cooperan:
 Define la estructura visual:
 
 - Un `<canvas id="board">` de **300 × 600** píxeles donde se renderiza el tablero.
-- Un recuadro `HOLD` (`<canvas id="hold-canvas">`) a la izquierda del tablero y un panel lateral con `SCORE`, `LINES`, `LEVEL`, el interruptor de tema, vista de la siguiente pieza y la lista de controles.
+- Un recuadro `HOLD` (`<canvas id="hold-canvas">`) a la izquierda del tablero y un panel lateral con `SCORE`, `LINES`, `LEVEL`, el interruptor de tema, el selector de skin, vista de la siguiente pieza y la lista de controles.
 - Un overlay para los estados **PAUSA** y **GAME OVER**.
 
 ### 2. `style.css`
