@@ -42,7 +42,8 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Hold (guardar pieza)**: `H` guarda la pieza en caída en el recuadro `HOLD` (a la izquierda del tablero) y pasa a la siguiente; `J` suelta la pieza guardada, que pasa a ser la pieza activa (sustituye a la que estaba cayendo) y deja el hueco libre. Mientras haya una pieza guardada, `H` no hace nada. El título `HOLD` usa letras de colores como el título del juego y el borde del recuadro brilla con el color de la pieza guardada.
 - **Sistema de puntuación** clásico de Tetris (100 / 300 / 500 / 800 multiplicado por nivel).
 - **Niveles** que aumentan cada 10 líneas y aceleran la caída.
-- **Pausa** y **Game Over** con opción de reinicio.
+- **Menú de pausa** (`P` o `Esc`): Reanudar, Reiniciar, Ver controles y Nivel inicial (1–15, se guarda en `localStorage`). Los inputs del juego quedan bloqueados mientras el menú está abierto y, al volver, se ignoran las teclas mantenidas un instante.
+- **Game Over** con opción de reinicio.
 - **Tema oscuro / claro**: interruptor en el panel lateral, entre `LEVEL` y `NEXT` (`<button id="theme-toggle">`), con las palabras `DARK` / `LIGHT` en letras de colores como el título y un bloque que se desliza. En el primer arranque usa el tema del sistema (`prefers-color-scheme`); después se guarda la elección en `localStorage`.
 
 ---
@@ -86,7 +87,7 @@ Después abre `http://localhost:8000` en el navegador.
 | `↑` o `X` | Rotar la pieza en sentido horario |
 | `↓`       | Soft drop (bajar más rápido)      |
 | `Espacio` | Hard drop (caída instantánea)     |
-| `P`       | Pausar / reanudar                 |
+| `P` / `Esc` | Abrir / cerrar el menú de pausa  |
 
 ---
 
@@ -117,7 +118,7 @@ Contiene toda la lógica del juego. A grandes rasgos:
 - **Game loop** (`loop`): basado en `requestAnimationFrame`, acumula el tiempo transcurrido y baja la pieza una fila cuando se supera `dropInterval`.
 - **Limpieza de líneas** (`clearLines`): recorre el tablero de abajo hacia arriba; cada fila completa se elimina y se inserta una vacía en la cima.
 - **Puntuación**: usa la tabla clásica `[0, 100, 300, 500, 800]` multiplicada por el nivel actual; el hard drop suma 2 puntos por celda recorrida y el soft drop 1 punto por fila.
-- **Nivel y velocidad**: el nivel sube cada 10 líneas; la velocidad de caída se calcula como `max(100, 1000 − (level − 1) × 90)` milisegundos.
+- **Nivel y velocidad**: el nivel empieza en el *nivel inicial* elegido en el menú de pausa (1–15) y sube cada 10 líneas; la velocidad de caída se calcula como `max(100, 1000 − (level − 1) × 90)` milisegundos.
 - **Ghost piece** (`ghostY`): proyecta la posición final de la pieza actual hacia abajo y la dibuja con `globalAlpha = 0.2`.
 
 ### Flujo del juego
