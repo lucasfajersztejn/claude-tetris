@@ -14,11 +14,15 @@ Open `index.html` directly, or serve statically: `python -m http.server 8000` th
 
 Three files, all logic in `game.js` (single script, no modules, global state via top-level `let`).
 
-- `index.html` declares DOM ids that `game.js` looks up at load: `board` (300x600 canvas), `next-canvas` (120x120), `score`, `lines`, `level`, `overlay`, `overlay-title`, `overlay-score`, `restart-btn`. Renaming any id breaks the game.
+- `index.html` declares DOM ids that `game.js` looks up at load: `board` (300x600 canvas), `next-canvas` (120x120), `score`, `lines`, `level`, `overlay`, `overlay-title`, `overlay-score`, `restart-btn`, `theme-toggle`. Renaming any id breaks the game.
 - Board is a `ROWS x COLS` matrix; cell is `0` or piece type 1-7. The same index selects the entry in `COLORS` and `PIECES`.
 - Game loop: `loop(ts)` on `requestAnimationFrame` accumulates `dropAccum` and drops one row when it exceeds `dropInterval`. `init()` resets all state; the restart button calls it. Pause cancels the frame and `togglePause` restarts `loop`.
 - Piece lifecycle: `lockPiece()` = `merge()` -> `clearLines()` -> `spawn()`. `spawn()` calls `endGame()` if the new piece collides immediately.
 - Scoring/speed live in `clearLines()` (`LINE_SCORES[n] * level`, level = lines/10 + 1, `dropInterval = max(100, 1000 - (level-1)*90)`), `softDrop()` (+1/row) and `hardDrop()` (+2/row).
+
+## Theming
+
+Colors live in CSS variables: dark in `:root`, light in `html[data-theme="light"]` (dark is the default, no attribute). The `#theme-toggle` button (a T piece in the panel) flips the attribute and rotates 90° per click. Canvas colors that depend on the theme (`--grid`, `--highlight`) are read in `readThemeColors()` into `themeColors`; call it after any theme change, then redraw. Add new themed colors as variables in both blocks.
 
 ## Gotchas
 
